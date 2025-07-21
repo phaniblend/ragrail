@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -18,13 +17,11 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -33,27 +30,23 @@
             margin-bottom: 30px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-
         h1 {
             color: #2c3e50;
             font-size: 2.5rem;
             margin-bottom: 10px;
             text-align: center;
         }
-
         .subtitle {
             text-align: center;
             color: #7f8c8d;
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
-
         .search-container {
             max-width: 600px;
             margin: 0 auto;
             position: relative;
         }
-
         .search-box {
             width: 100%;
             padding: 15px 20px;
@@ -64,19 +57,16 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
         }
-
         .search-box:focus {
             border-color: #c0392b;
             box-shadow: 0 6px 25px rgba(231, 76, 60, 0.3);
         }
-
         .content-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
             margin-top: 40px;
         }
-
         .card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -85,23 +75,19 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
         }
-
         .card h3 {
             color: #e74c3c;
             margin-bottom: 15px;
             font-size: 1.4rem;
         }
-
         .card p {
             color: #555;
             margin-bottom: 15px;
         }
-
         .code-block {
             background: #2c3e50;
             color: #ecf0f1;
@@ -112,90 +98,6 @@
             overflow-x: auto;
             margin: 10px 0;
         }
-
-        /* Hidden Developer Interface */
-        .dev-interface {
-            display: none !important;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 30px;
-            border: 2px solid #00ff88;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-        }
-
-        .dev-interface.active {
-            display: block !important;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dev-title {
-            color: #00ff88;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        .input-label {
-            color: #00ff88;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .dev-input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #00ff88;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .dev-input:focus {
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .dev-textarea {
-            min-height: 100px;
-            resize: vertical;
-            font-family: 'Courier New', monospace;
-        }
-
-        .ask-btn {
-            background: linear-gradient(45deg, #00ff88, #00cc66);
-            color: #000;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .ask-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
-        }
-
         /* Modal Styles */
         .modal {
             display: none;
@@ -208,23 +110,20 @@
             background-color: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
         }
-
         .modal.show {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
         .modal-content {
-            background: rgba(0, 20, 0, 0.95);
-            border: 2px solid #00ff88;
+            background: white;
             border-radius: 15px;
             width: 90%;
             max-width: 1000px;
             height: 80%;
             max-height: 800px;
             position: relative;
-            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             resize: both;
@@ -232,27 +131,24 @@
             min-width: 600px;
             min-height: 400px;
         }
-
         .modal-header {
-            background: rgba(0, 255, 136, 0.1);
-            border-bottom: 1px solid #00ff88;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: move;
         }
-
         .modal-title {
-            color: #00ff88;
+            color: #333;
             font-size: 1.2rem;
             font-weight: bold;
         }
-
         .modal-close {
             background: none;
             border: none;
-            color: #00ff88;
+            color: #666;
             font-size: 24px;
             cursor: pointer;
             padding: 0;
@@ -264,70 +160,69 @@
             border-radius: 50%;
             transition: background 0.3s ease;
         }
-
         .modal-close:hover {
-            background: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 0, 0, 0.1);
         }
-
         .modal-body {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            color: #fff;
-            font-family: 'Courier New', monospace;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 14px;
             line-height: 1.6;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
-
-        .modal-body::-webkit-scrollbar {
-            width: 8px;
+        .modal-body h1, .modal-body h2, .modal-body h3 {
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+            color: #2c3e50;
         }
-
-        .modal-body::-webkit-scrollbar-track {
-            background: rgba(0, 255, 136, 0.1);
+        .modal-body pre.modal-code-block {
+            background: #23272f;
+            color: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 1em 0;
+            overflow-x: auto;
+            position: relative;
+        }
+        .modal-body code {
+            background: #f4f4f4;
+            color: #c7254e;
+            padding: 2px 4px;
             border-radius: 4px;
+            font-size: 95%;
         }
-
-        .modal-body::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 136, 0.3);
-            border-radius: 4px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 255, 136, 0.5);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Resize handle */
-        .modal-content::after {
-            content: '';
+        .copy-btn {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, transparent 50%, #00ff88 50%);
-            cursor: se-resize;
-            border-bottom-right-radius: 15px;
+            top: 8px;
+            right: 8px;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
         }
-
+        .copy-btn:hover {
+            opacity: 1;
+        }
         /* Loading spinner */
         .loading-spinner {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(0, 255, 136, 0.3);
+            border: 3px solid rgba(231, 76, 60, 0.3);
             border-radius: 50%;
-            border-top-color: #00ff88;
+            border-top-color: #e74c3c;
             animation: spin 1s ease-in-out infinite;
             margin-right: 10px;
         }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -338,20 +233,18 @@
         <header>
             <h1>⚛️ React Reference</h1>
             <p class="subtitle">Your comprehensive guide to modern React development</p>
-            
             <div class="search-container">
                 <input 
                     type="text" 
                     class="search-box" 
                     id="mainSearch"
-                    placeholder="Search React documentation, hooks, patterns..."
+                    placeholder="Ask any React question - hooks, components, best practices..."
                     autocomplete="off"
                 >
             </div>
         </header>
-
-        <!-- Fake React Documentation Content -->
-        <div id="fakeContent" class="content-grid">
+        <!-- React Documentation Content -->
+        <div class="content-grid">
             <div class="card">
                 <h3>🪝 React Hooks</h3>
                 <p>Learn about the power of React Hooks and how they revolutionize component state management.</p>
@@ -362,7 +255,6 @@ useEffect(() => {
 }, [count]);</div>
                 <p>Hooks let you use state and lifecycle features without writing class components.</p>
             </div>
-
             <div class="card">
                 <h3>🔄 Component Lifecycle</h3>
                 <p>Understanding the React component lifecycle is crucial for building efficient applications.</p>
@@ -379,7 +271,6 @@ useEffect(() => {
 }, []);</div>
                 <p>Use useEffect to handle side effects and cleanup in functional components.</p>
             </div>
-
             <div class="card">
                 <h3>🎯 Context API</h3>
                 <p>Share state across your component tree without prop drilling using React Context.</p>
@@ -395,7 +286,6 @@ function App() {
 }</div>
                 <p>Context provides a way to pass data through the component tree without having to pass props down manually.</p>
             </div>
-
             <div class="card">
                 <h3>⚡ Performance Optimization</h3>
                 <p>Optimize your React applications with memoization and lazy loading techniques.</p>
@@ -408,7 +298,6 @@ const LazyComponent = lazy(() =>
 );</div>
                 <p>Use React.memo, useMemo, and useCallback to prevent unnecessary re-renders.</p>
             </div>
-
             <div class="card">
                 <h3>🛠️ Custom Hooks</h3>
                 <p>Create reusable logic with custom hooks to keep your components clean and focused.</p>
@@ -427,7 +316,6 @@ const LazyComponent = lazy(() =>
 }</div>
                 <p>Custom hooks enable you to extract component logic into reusable functions.</p>
             </div>
-
             <div class="card">
                 <h3>🎨 Styling Solutions</h3>
                 <p>Explore modern approaches to styling React components with CSS-in-JS and utility frameworks.</p>
@@ -447,276 +335,176 @@ const Button = styled.button`
                 <p>Choose from various styling solutions based on your project needs and preferences.</p>
             </div>
         </div>
-
-        <!-- Hidden Developer Interface -->
-        <div id="devInterface" class="dev-interface">
-            <h2 class="dev-title">🔧 React Code Analyzer</h2>
-            
-            <div class="input-group">
-                <label class="input-label">🔍 Search Query (Visible)</label>
-                <input 
-                    type="text" 
-                    class="dev-input" 
-                    id="searchQuery"
-                    placeholder="Why is my useEffect hook re-running infinitely?"
-                >
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">🎭 System Instructions (Hidden Logic)</label>
-                <textarea 
-                    class="dev-input dev-textarea" 
-                    id="obfuscatedPrompt"
-                    placeholder="Act as a senior React developer with 10+ years experience. Analyze the code and provide detailed explanations with best practices..."
-                ></textarea>
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">📁 Consolidated Codebase (Paste crawler output)</label>
-                <textarea 
-                    class="dev-input dev-textarea" 
-                    id="codebaseInput"
-                    placeholder="Paste the output from your crawler.js script here...
-
-///////// src/components/Header.tsx ://////
-import React from 'react';
-// ... your code content
-///
-
-///////// src/utils/api.js ://////  
-export const fetchData = () => {
-// ... your code content
-///
-
-... (continue pasting all the consolidated code)"
-                    style="min-height: 200px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4; background: rgba(0, 50, 0, 0.3);"
-                ></textarea>
-                <div style="text-align: right; color: #00ff88; font-size: 12px; margin-top: 5px;">
-                    <span id="codebaseCounter">0</span> characters
-                </div>
-                <small style="color: #888; font-style: italic;">
-                    Run: <code style="color: #00ff88;">node crawler.js ./your-project output.txt</code> then copy and paste the content here
-                </small>
-            </div>
-
-            <button class="ask-btn" onclick="analyzeCode()">
-                🚀 Analyze Code
-            </button>
-        </div>
     </div>
-
     <!-- Results Modal -->
     <div id="resultsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">📋 Code Analysis Results</div>
+                <div class="modal-title">📚 React Documentation Assistant</div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalOutput">
-                Analysis results will appear here...
+                Results will appear here...
             </div>
         </div>
     </div>
-
     <script>
-        // Secret passphrase to unlock developer interface
-        const SECRET_PASSPHRASE = "devmode2024";
-        
-        const mainSearch = document.getElementById('mainSearch');
-        const fakeContent = document.getElementById('fakeContent');
-        const devInterface = document.getElementById('devInterface');
-        const codebaseInput = document.getElementById('codebaseInput');
-        const codebaseCounter = document.getElementById('codebaseCounter');
-        const resultsModal = document.getElementById('resultsModal');
-        const modalOutput = document.getElementById('modalOutput');
-        
-        // Listen for secret passphrase
-        mainSearch.addEventListener('input', function(e) {
-            const value = e.target.value.toLowerCase().trim();
-            
-            if (value === SECRET_PASSPHRASE) {
-                fakeContent.style.display = 'none';
-                devInterface.classList.add('active');
-                mainSearch.style.display = 'none';
-                
-                setTimeout(() => {
-                    mainSearch.value = '';
-                }, 100);
+    const mainSearch = document.getElementById('mainSearch');
+    const resultsModal = document.getElementById('resultsModal');
+    const modalOutput = document.getElementById('modalOutput');
+    // Main search functionality
+    mainSearch.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const query = this.value.trim();
+            if (query) {
+                searchReact(query);
             }
-        });
-        
-        // Character counter for codebase input
-        codebaseInput.addEventListener('input', function() {
-            const count = this.value.length;
-            codebaseCounter.textContent = count.toLocaleString();
-            
-            // Change color based on size
-            if (count > 5000000) { // 5MB
-                codebaseCounter.style.color = '#ff4444';
-            } else if (count > 1000000) { // 1MB
-                codebaseCounter.style.color = '#ffaa00';
-            } else {
-                codebaseCounter.style.color = '#00ff88';
-            }
-            
-            // Auto-resize textarea
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 400) + 'px';
-        });
-
-        // Modal functions
-        function openModal() {
-            resultsModal.classList.add('show');
         }
-
-        function closeModal() {
-            resultsModal.classList.remove('show');
-        }
-
-        // Close modal when clicking outside
-        resultsModal.addEventListener('click', function(e) {
-            if (e.target === resultsModal) {
-                closeModal();
-            }
-        });
-
-        // Make modal draggable
-        let isDragging = false;
-        let currentX, currentY, initialX, initialY;
-
-        document.querySelector('.modal-header').addEventListener('mousedown', function(e) {
-            isDragging = true;
-            initialX = e.clientX;
-            initialY = e.clientY;
-        });
-
-        document.addEventListener('mousemove', function(e) {
-            if (isDragging) {
-                const modal = document.querySelector('.modal-content');
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-                modal.style.transform = `translate(${currentX}px, ${currentY}px)`;
-            }
-        });
-
-        document.addEventListener('mouseup', function() {
-            isDragging = false;
-        });
-        
-        // Analyze code function with TRUE stealth network calls
-        async function analyzeCode() {
-            const searchQuery = document.getElementById('searchQuery').value;
-            const obfuscatedPrompt = document.getElementById('obfuscatedPrompt').value;
-            const codebaseText = codebaseInput.value.trim();
-            
-            if (!searchQuery) {
-                alert('Please enter a search query');
-                return;
-            }
-            
-            if (!codebaseText) {
-                alert('Please paste your consolidated codebase');
-                return;
-            }
-            
-            if (codebaseText.length < 100) {
-                alert('Codebase seems too small. Make sure you pasted the full output from crawler.js');
-                return;
-            }
-            
-            // Show modal with loading
+    });
+    async function searchReact(query) {
+        try {
+            // Show loading in modal
             openModal();
-            modalOutput.innerHTML = '<div class="loading-spinner"></div>Processing your code analysis...\n\nPlease wait while we examine your project structure and patterns.';
-            
-            try {
-                // TRUE STEALTH MODE: Safe encoding for special characters
-const stealthPayload = {
-    q: searchQuery,  // Only this appears innocent
-    _session: btoa(unescape(encodeURIComponent(JSON.stringify({  // Safe encoding
-        prompt: obfuscatedPrompt || 'You are a helpful senior software developer assistant.',
-        codebase: codebaseText
-    }))))
-};
-                
-                // Call with innocent-looking endpoint
-                const response = await fetch('/api/search', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'User-Agent': 'Mozilla/5.0 (Documentation Search)',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify(stealthPayload)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Decode the hidden response
-                let result;
-                if (data.metadata) {
-                    try {
-                        result = atob(data.metadata);
-                    } catch {
-                        result = data.results || 'No results found';
-                    }
-                } else {
+            renderMarkdownToModal('<div class="loading-spinner"></div>Searching React documentation...');
+            // Prepare the hidden session payload
+            const sessionPayload = {
+                prompt: query,
+                codebase: ""
+            };
+            const sessionEncoded = btoa(JSON.stringify(sessionPayload));
+            // Call the API
+            const response = await fetch('/api/search', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    q: query,
+                    _session: sessionEncoded
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            let result = data.results || 'No results found';
+            if (data.metadata) {
+                try {
+                    result = atob(data.metadata);
+                } catch {
                     result = data.results || 'No results found';
                 }
-
-                // Clean response - remove any AI/Claude references
-                result = result.replace(/Claude/g, 'React Expert');
-                result = result.replace(/\*Powered by Claude.*?\*/g, '');
-                result = result.replace(/\*Analyzed.*?characters.*?\*/g, '');
-                result = result.replace(/🤖/g, '⚛️');
-                result = result.replace(/# 🚀 Claude Analysis/g, '# 🚀 Code Analysis');
-                result = result.replace(/# 🚀 Codebase Analysis/g, '# 🚀 Code Analysis');
-                
-                modalOutput.textContent = result;
-                
-            } catch (error) {
-                console.error('Error:', error);
-                modalOutput.textContent = `❌ Error: ${error.message}\n\nPlease check if the backend is running and try again.`;
             }
+            renderMarkdownToModal(result);
+        } catch (error) {
+            console.error('Search error:', error);
+            renderMarkdownToModal(`❌ Error searching documentation: ${error.message}`);
         }
-        
-        // Fake search functionality for public interface
-        mainSearch.addEventListener('input', function(e) {
-            const value = e.target.value.toLowerCase();
-            
-            if (value === SECRET_PASSPHRASE.toLowerCase()) return;
-            
-            if (value.length > 2 && value !== SECRET_PASSPHRASE.toLowerCase()) {
-                const cards = document.querySelectorAll('.card');
-                cards.forEach(card => {
-                    const text = card.textContent.toLowerCase();
-                    if (text.includes(value)) {
-                        card.style.border = '2px solid #e74c3c';
-                        card.style.background = 'rgba(231, 76, 60, 0.1)';
-                    } else {
-                        card.style.border = 'none';
-                        card.style.background = 'rgba(255, 255, 255, 0.95)';
-                    }
-                });
-            } else {
-                const cards = document.querySelectorAll('.card');
-                cards.forEach(card => {
+    }
+    // Modal functions
+    function openModal() {
+        resultsModal.classList.add('show');
+    }
+    function closeModal() {
+        resultsModal.classList.remove('show');
+        document.querySelector('.modal-content').style.transform = '';
+    }
+    // Only close modal via X button
+    resultsModal.addEventListener('click', function(e) {
+        // Do nothing if clicking outside modal-content
+    });
+    // Make modal draggable
+    let isDragging = false;
+    let dragOffsetX = 0, dragOffsetY = 0;
+    document.querySelector('.modal-header').addEventListener('mousedown', function(e) {
+        isDragging = true;
+        const modal = document.querySelector('.modal-content');
+        dragOffsetX = e.clientX - modal.getBoundingClientRect().left;
+        dragOffsetY = e.clientY - modal.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+    });
+    document.addEventListener('mousemove', function(e) {
+        if (isDragging) {
+            const modal = document.querySelector('.modal-content');
+            let left = e.clientX - dragOffsetX;
+            let top = e.clientY - dragOffsetY;
+            left = Math.max(0, Math.min(left, window.innerWidth - modal.offsetWidth));
+            top = Math.max(0, Math.min(top, window.innerHeight - modal.offsetHeight));
+            modal.style.position = 'fixed';
+            modal.style.left = left + 'px';
+            modal.style.top = top + 'px';
+            modal.style.margin = 0;
+            modal.style.transform = '';
+        }
+    });
+    document.addEventListener('mouseup', function() {
+        isDragging = false;
+        document.body.style.userSelect = '';
+    });
+    // Markdown rendering (basic, safe, no external libs)
+    function renderMarkdownToModal(markdown) {
+        let html = markdown
+            .replace(/```([\s\S]*?)```/g, function(match, code) {
+                return `<pre class="modal-code-block"><code>${escapeHtml(code)}</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>`;
+            })
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/^### (.*)$/gm, '<h3>$1</h3>')
+            .replace(/^## (.*)$/gm, '<h2>$1</h2>')
+            .replace(/^# (.*)$/gm, '<h1>$1</h1>')
+            .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+            .replace(/\*(.*?)\*/g, '<i>$1</i>')
+            .replace(/^- (.*)$/gm, '<li>$1</li>')
+            .replace(/\n/g, '<br>');
+        html = html.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>');
+        modalOutput.innerHTML = html;
+        const codeBlocks = modalOutput.querySelectorAll('.copy-btn');
+        codeBlocks.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                copyCode(btn);
+            });
+        });
+    }
+    function escapeHtml(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+    function copyCode(btn) {
+        const code = btn.parentElement.querySelector('code').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+        });
+    }
+    // Highlight search terms in cards
+    mainSearch.addEventListener('input', function(e) {
+        const value = e.target.value.toLowerCase();
+        if (value.length > 2) {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(value)) {
+                    card.style.border = '2px solid #e74c3c';
+                    card.style.background = 'rgba(231, 76, 60, 0.1)';
+                } else {
                     card.style.border = 'none';
                     card.style.background = 'rgba(255, 255, 255, 0.95)';
-                });
-            }
-        });
-        
-        // Double-click to return to public interface
-        devInterface.addEventListener('dblclick', function() {
-            fakeContent.style.display = 'grid';
-            devInterface.classList.remove('active');
-            mainSearch.style.display = 'block';
-            closeModal();
-        });
+                }
+            });
+        } else {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.border = 'none';
+                card.style.background = 'rgba(255, 255, 255, 0.95)';
+            });
+        }
+    });
     </script>
 </body>
 </html>
