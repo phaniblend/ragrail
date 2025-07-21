@@ -1,0 +1,42 @@
+# Flask Web Server
+flask==2.3.3
+flask-cors==4.0.0
+gunicorn==21.2.0
+
+# AI Model & Transformers
+torch==2.7.1
+transformers==4.33.2
+accelerate==0.23.0
+bitsandbytes==0.41.1
+sentencepiece==0.1.99
+
+# Embeddings & Vector Search
+sentence-transformers==2.2.2
+chromadb==0.4.10
+faiss-cpu==1.7.4
+
+# File Processing
+python-multipart==0.0.6
+werkzeug==2.3.7
+
+# Data Processing
+numpy==1.24.3
+pandas==2.0.3
+tqdm==4.66.1
+
+# Environment & Config
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# Logging & Monitoring
+loguru==0.7.2
+
+# Security & Utils
+cryptography==41.0.4
+requests==2.31.0
+chardet==5.2.0
+
+# Development & Testing (optional)
+pytest==7.4.2
+black==23.7.0
+flake8==6.0.0

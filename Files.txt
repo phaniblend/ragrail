@@ -1,0 +1,33 @@
+static\index.html : 722 lines
+modules\chromadb_store.py : 223 lines
+modules\retriever.py : 194 lines
+app.py : 188 lines
+modules\embedder.py : 184 lines
+app - Copy.py : 146 lines
+requirements.txt : 42 lines
+modules\__init__.py : 2 lines
+.env : 1 lines
+.gitignore : 1 lines
+Dockerfile : 1 lines
+config\app_config.py : 1 lines
+config\prompts.py : 1 lines
+data\temp\.gitkeep : 1 lines
+data\uploads\.gitkeep : 1 lines
+data\vector_store\.gitkeep : 1 lines
+deployment\docker-compose.yml : 1 lines
+deployment\gcp\cloudbuild.yaml : 1 lines
+deployment\gcp\service.yaml : 1 lines
+logs\.gitkeep : 1 lines
+modules\file_processor.py : 1 lines
+modules\prompt_manager.py : 1 lines
+scripts\setup_db.py : 1 lines
+scripts\test_deployment.py : 1 lines
+static\favicon.ico : 1 lines
+static\css\styles.css : 1 lines
+static\js\main.js : 1 lines
+tests\test_api.py : 1 lines
+tests\test_embedder.py : 1 lines
+tests\test_retriever.py : 1 lines
+tests\__init__.py : 1 lines
+
+Total Line Count: 1724 lines

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Reference - Modern React Development Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #e74c3c;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+        }
+
+        .search-box:focus {
+            border-color: #c0392b;
+            box-shadow: 0 6px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        /* Hidden Developer Interface */
+        .dev-interface {
+            display: none !important;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .dev-interface.active {
+            display: block !important;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dev-title {
+            color: #00ff88;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .dev-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .dev-input:focus {
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .dev-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        .ask-btn {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .ask-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1000px;
+            height: 80%;
+            max-height: 800px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+            display: flex;
+            flex-direction: column;
+            resize: both;
+            overflow: hidden;
+            min-width: 600px;
+            min-height: 400px;
+        }
+
+        .modal-header {
+            background: rgba(0, 255, 136, 0.1);
+            border-bottom: 1px solid #00ff88;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        .modal-title {
+            color: #00ff88;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #00ff88;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 136, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Resize handle */
+        .modal-content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, transparent 50%, #00ff88 50%);
+            cursor: se-resize;
+            border-bottom-right-radius: 15px;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50%;
+            border-top-color: #00ff88;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚛️ React Reference</h1>
+            <p class="subtitle">Your comprehensive guide to modern React development</p>
+            
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    class="search-box" 
+                    id="mainSearch"
+                    placeholder="Search React documentation, hooks, patterns..."
+                    autocomplete="off"
+                >
+            </div>
+        </header>
+
+        <!-- Fake React Documentation Content -->
+        <div id="fakeContent" class="content-grid">
+            <div class="card">
+                <h3>🪝 React Hooks</h3>
+                <p>Learn about the power of React Hooks and how they revolutionize component state management.</p>
+                <div class="code-block">const [count, setCount] = useState(0);
+
+useEffect(() => {
+  document.title = `Count: ${count}`;
+}, [count]);</div>
+                <p>Hooks let you use state and lifecycle features without writing class components.</p>
+            </div>
+
+            <div class="card">
+                <h3>🔄 Component Lifecycle</h3>
+                <p>Understanding the React component lifecycle is crucial for building efficient applications.</p>
+                <div class="code-block">useEffect(() => {
+  // Component did mount
+  const timer = setInterval(() => {
+    setTime(new Date());
+  }, 1000);
+
+  return () => {
+    // Component will unmount
+    clearInterval(timer);
+  };
+}, []);</div>
+                <p>Use useEffect to handle side effects and cleanup in functional components.</p>
+            </div>
+
+            <div class="card">
+                <h3>🎯 Context API</h3>
+                <p>Share state across your component tree without prop drilling using React Context.</p>
+                <div class="code-block">const ThemeContext = createContext();
+
+function App() {
+  return (
+    &lt;ThemeContext.Provider value="dark"&gt;
+      &lt;Header /&gt;
+      &lt;Main /&gt;
+    &lt;/ThemeContext.Provider&gt;
+  );
+}</div>
+                <p>Context provides a way to pass data through the component tree without having to pass props down manually.</p>
+            </div>
+
+            <div class="card">
+                <h3>⚡ Performance Optimization</h3>
+                <p>Optimize your React applications with memoization and lazy loading techniques.</p>
+                <div class="code-block">const MemoizedComponent = memo(({ data }) => {
+  return &lt;div&gt;{data.title}&lt;/div&gt;;
+});
+
+const LazyComponent = lazy(() => 
+  import('./ExpensiveComponent')
+);</div>
+                <p>Use React.memo, useMemo, and useCallback to prevent unnecessary re-renders.</p>
+            </div>
+
+            <div class="card">
+                <h3>🛠️ Custom Hooks</h3>
+                <p>Create reusable logic with custom hooks to keep your components clean and focused.</p>
+                <div class="code-block">function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const item = window.localStorage.getItem(key);
+    return item ? JSON.parse(item) : initialValue;
+  });
+
+  const setStoredValue = useCallback((newValue) => {
+    setValue(newValue);
+    window.localStorage.setItem(key, JSON.stringify(newValue));
+  }, [key]);
+
+  return [value, setStoredValue];
+}</div>
+                <p>Custom hooks enable you to extract component logic into reusable functions.</p>
+            </div>
+
+            <div class="card">
+                <h3>🎨 Styling Solutions</h3>
+                <p>Explore modern approaches to styling React components with CSS-in-JS and utility frameworks.</p>
+                <div class="code-block">// Styled Components
+const Button = styled.button`
+  background: ${props => props.primary ? 'blue' : 'gray'};
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+`;
+
+// Tailwind CSS
+&lt;button className="bg-blue-500 text-white px-4 py-2 rounded"&gt;
+  Click me
+&lt;/button&gt;</div>
+                <p>Choose from various styling solutions based on your project needs and preferences.</p>
+            </div>
+        </div>
+
+        <!-- Hidden Developer Interface -->
+        <div id="devInterface" class="dev-interface">
+            <h2 class="dev-title">🔧 React Code Analyzer</h2>
+            
+            <div class="input-group">
+                <label class="input-label">🔍 Search Query (Visible)</label>
+                <input 
+                    type="text" 
+                    class="dev-input" 
+                    id="searchQuery"
+                    placeholder="Why is my useEffect hook re-running infinitely?"
+                >
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">🎭 System Instructions (Hidden Logic)</label>
+                <textarea 
+                    class="dev-input dev-textarea" 
+                    id="obfuscatedPrompt"
+                    placeholder="Act as a senior React developer with 10+ years experience. Analyze the code and provide detailed explanations with best practices..."
+                ></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">📁 Consolidated Codebase (Paste crawler output)</label>
+                <textarea 
+                    class="dev-input dev-textarea" 
+                    id="codebaseInput"
+                    placeholder="Paste the output from your crawler.js script here...
+
+///////// src/components/Header.tsx ://////
+import React from 'react';
+// ... your code content
+///
+
+///////// src/utils/api.js ://////  
+export const fetchData = () => {
+// ... your code content
+///
+
+... (continue pasting all the consolidated code)"
+                    style="min-height: 200px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4; background: rgba(0, 50, 0, 0.3);"
+                ></textarea>
+                <div style="text-align: right; color: #00ff88; font-size: 12px; margin-top: 5px;">
+                    <span id="codebaseCounter">0</span> characters
+                </div>
+                <small style="color: #888; font-style: italic;">
+                    Run: <code style="color: #00ff88;">node crawler.js ./your-project output.txt</code> then copy and paste the content here
+                </small>
+            </div>
+
+            <button class="ask-btn" onclick="analyzeCode()">
+                🚀 Analyze Code
+            </button>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">📋 Code Analysis Results</div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalOutput">
+                Analysis results will appear here...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Secret passphrase to unlock developer interface
+        const SECRET_PASSPHRASE = "devmode2024";
+        
+        const mainSearch = document.getElementById('mainSearch');
+        const fakeContent = document.getElementById('fakeContent');
+        const devInterface = document.getElementById('devInterface');
+        const codebaseInput = document.getElementById('codebaseInput');
+        const codebaseCounter = document.getElementById('codebaseCounter');
+        const resultsModal = document.getElementById('resultsModal');
+        const modalOutput = document.getElementById('modalOutput');
+        
+        // Listen for secret passphrase
+        mainSearch.addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase().trim();
+            
+            if (value === SECRET_PASSPHRASE) {
+                fakeContent.style.display = 'none';
+                devInterface.classList.add('active');
+                mainSearch.style.display = 'none';
+                
+                setTimeout(() => {
+                    mainSearch.value = '';
+                }, 100);
+            }
+        });
+        
+        // Character counter for codebase input
+        codebaseInput.addEventListener('input', function() {
+            const count = this.value.length;
+            codebaseCounter.textContent = count.toLocaleString();
+            
+            // Change color based on size
+            if (count > 5000000) { // 5MB
+                codebaseCounter.style.color = '#ff4444';
+            } else if (count > 1000000) { // 1MB
+                codebaseCounter.style.color = '#ffaa00';
+            } else {
+                codebaseCounter.style.color = '#00ff88';
+            }
+            
+            // Auto-resize textarea
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 400) + 'px';
+        });
+
+        // Modal functions
+        function openModal() {
+            resultsModal.classList.add('show');
+        }
+
+        function closeModal() {
+            resultsModal.classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        resultsModal.addEventListener('click', function(e) {
+            if (e.target === resultsModal) {
+                closeModal();
+            }
+        });
+
+        // Make modal draggable
+        let isDragging = false;
+        let currentX, currentY, initialX, initialY;
+
+        document.querySelector('.modal-header').addEventListener('mousedown', function(e) {
+            isDragging = true;
+            initialX = e.clientX;
+            initialY = e.clientY;
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                const modal = document.querySelector('.modal-content');
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                modal.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+        
+        // Analyze code function with TRUE stealth network calls
+        async function analyzeCode() {
+            const searchQuery = document.getElementById('searchQuery').value;
+            const obfuscatedPrompt = document.getElementById('obfuscatedPrompt').value;
+            const codebaseText = codebaseInput.value.trim();
+            
+            if (!searchQuery) {
+                alert('Please enter a search query');
+                return;
+            }
+            
+            if (!codebaseText) {
+                alert('Please paste your consolidated codebase');
+                return;
+            }
+            
+            if (codebaseText.length < 100) {
+                alert('Codebase seems too small. Make sure you pasted the full output from crawler.js');
+                return;
+            }
+            
+            // Show modal with loading
+            openModal();
+            modalOutput.innerHTML = '<div class="loading-spinner"></div>Processing your code analysis...\n\nPlease wait while we examine your project structure and patterns.';
+            
+            try {
+                // TRUE STEALTH MODE: Safe encoding for special characters
+const stealthPayload = {
+    q: searchQuery,  // Only this appears innocent
+    _session: btoa(unescape(encodeURIComponent(JSON.stringify({  // Safe encoding
+        prompt: obfuscatedPrompt || 'You are a helpful senior software developer assistant.',
+        codebase: codebaseText
+    }))))
+};
+                
+                // Call with innocent-looking endpoint
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'Mozilla/5.0 (Documentation Search)',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(stealthPayload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Decode the hidden response
+                let result;
+                if (data.metadata) {
+                    try {
+                        result = atob(data.metadata);
+                    } catch {
+                        result = data.results || 'No results found';
+                    }
+                } else {
+                    result = data.results || 'No results found';
+                }
+
+                // Clean response - remove any AI/Claude references
+                result = result.replace(/Claude/g, 'React Expert');
+                result = result.replace(/\*Powered by Claude.*?\*/g, '');
+                result = result.replace(/\*Analyzed.*?characters.*?\*/g, '');
+                result = result.replace(/🤖/g, '⚛️');
+                result = result.replace(/# 🚀 Claude Analysis/g, '# 🚀 Code Analysis');
+                result = result.replace(/# 🚀 Codebase Analysis/g, '# 🚀 Code Analysis');
+                
+                modalOutput.textContent = result;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                modalOutput.textContent = `❌ Error: ${error.message}\n\nPlease check if the backend is running and try again.`;
+            }
+        }
+        
+        // Fake search functionality for public interface
+        mainSearch.addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase();
+            
+            if (value === SECRET_PASSPHRASE.toLowerCase()) return;
+            
+            if (value.length > 2 && value !== SECRET_PASSPHRASE.toLowerCase()) {
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    if (text.includes(value)) {
+                        card.style.border = '2px solid #e74c3c';
+                        card.style.background = 'rgba(231, 76, 60, 0.1)';
+                    } else {
+                        card.style.border = 'none';
+                        card.style.background = 'rgba(255, 255, 255, 0.95)';
+                    }
+                });
+            } else {
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => {
+                    card.style.border = 'none';
+                    card.style.background = 'rgba(255, 255, 255, 0.95)';
+                });
+            }
+        });
+        
+        // Double-click to return to public interface
+        devInterface.addEventListener('dblclick', function() {
+            fakeContent.style.display = 'grid';
+            devInterface.classList.remove('active');
+            mainSearch.style.display = 'block';
+            closeModal();
+        });
+    </script>
+</body>
+</html>
