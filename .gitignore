@@ -1,1 +1,33 @@
- .env
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables
+.env
+
+# Data, models, and logs (do not track large or generated files)
+data/
+logs/
+
+# Ignore all safetensors/model files
+*.safetensors
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python test cache
+.pytest_cache/
+
+# Railway/VSCode/IDE config (optional)
+.vscode/
+.railway/
+.idea/
+
+# Node modules (if any JS tooling is used)
+node_modules/
