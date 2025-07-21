@@ -1,0 +1,9 @@
+    .git
+    data
+    logs
+    tests
+    *.safetensors
+    *.pyc
+    __pycache__
+    *.pkl
+    *.ipynb
