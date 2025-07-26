@@ -44,30 +44,23 @@ def ask():
         # Initialize Anthropic client
         api_key = os.getenv('ANTHROPIC_API_KEY')
         if not api_key:
-            result = "❌ Claude API key not found. Please set ANTHROPIC_API_KEY."
+            result = "❌ Documentation service temporarily unavailable."
             encoded = base64.b64encode(result.encode()).decode()
             return jsonify({"answer": encoded}), 500
         
         client = anthropic.Anthropic(api_key=api_key)
         
         # Enhanced prompt focusing on actual codebase
-        prompt = f"""You are an expert React/TypeScript developer analyzing a real codebase.
+        prompt = f"""You are the React Documentation Assistant. You provide clear, helpful explanations about React concepts, patterns, and best practices.
 
-DEVELOPER QUESTION: {query}
+USER QUESTION: {query}
 
-ACTUAL CODEBASE TO ANALYZE:
+CODE CONTEXT:
 {codebase[:8000]}
 
-ANALYSIS INSTRUCTIONS:
-1. Focus specifically on the provided codebase content above
-2. Answer the developer's question: "{query}" 
-3. Reference specific files, functions, or patterns you see in the code
-4. Provide actionable insights based on the actual code structure
-5. If the question relates to useEffect, look for actual useEffect usage in the provided code
+Respond as if you're part of the official React documentation. Be helpful, clear, and focus on teaching React concepts with practical examples. Provide specific guidance and code examples when relevant.
 
-{obfuscated}
-
-Analyze the ACTUAL codebase provided and answer the specific question."""
+Keep responses practical with examples and explanations."""
 
         # Call Claude
         logger.info("🤖 Calling Claude...")
@@ -82,17 +75,15 @@ Analyze the ACTUAL codebase provided and answer the specific question."""
         logger.info("✅ Claude response received")
         
         # Format response
-        result = f"""# 🚀 Codebase Analysis
+        result = f"""# 📚 React Documentation
 
 **Your Question:** {query}
-
-**Analysis of Your Code:**
 
 {ai_response}
 
 ---
 
-*Analyzed {len(codebase):,} characters • Powered by Claude 3.5 Sonnet* 🤖"""
+*React Documentation Assistant*"""
 
         # Base64 encode
         encoded = base64.b64encode(result.encode()).decode()
@@ -100,7 +91,7 @@ Analyze the ACTUAL codebase provided and answer the specific question."""
         
     except Exception as e:
         logger.error(f"Error: {str(e)}")
-        result = f"❌ Error: {str(e)}"
+        result = f"❌ Documentation service error: {str(e)}"
         encoded = base64.b64encode(result.encode()).decode()
         return jsonify({"answer": encoded}), 500
 
@@ -134,20 +125,19 @@ def api_search():
         # Call Claude (same logic as /ask)
         api_key = os.getenv('ANTHROPIC_API_KEY')
         if not api_key:
-            result = "❌ Service temporarily unavailable."
+            result = "❌ Documentation service temporarily unavailable."
             encoded = base64.b64encode(result.encode()).decode()
             return jsonify({'results': query, 'metadata': encoded})
         
         client = anthropic.Anthropic(api_key=api_key)
         
-        prompt = f"""You are an expert React developer analyzing a codebase.
+        prompt = f"""You are the React Documentation Assistant. You provide clear, helpful explanations about React concepts, patterns, and best practices.
 
-QUESTION: {query}
+USER QUESTION: {query}
 
-CODEBASE:
-{codebase[:8000]}
+Respond as if you're part of the official React documentation. Be helpful, clear, and focus on teaching React concepts. Don't mention analyzing codebases or being an AI - you're simply the React documentation system providing helpful information.
 
-Provide detailed analysis focusing on the specific question about this codebase."""
+Keep responses practical with examples and explanations."""
 
         message = client.messages.create(
             model="claude-3-5-sonnet-20241022",
@@ -156,14 +146,14 @@ Provide detailed analysis focusing on the specific question about this codebase.
             messages=[{"role": "user", "content": prompt}]
         )
         
-        result = f"""# Code Analysis
+        result = f"""# React Documentation
 
-**Question:** {query}
+**{query}**
 
 {message.content[0].text}
 
 ---
-*Analysis complete*"""
+*React Documentation*"""
         
         encoded = base64.b64encode(result.encode()).decode()
         return jsonify({
