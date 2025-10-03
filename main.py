@@ -1,12 +1,8 @@
-Perfect! Let's add the Cursor AI proxy server to your GitHub repository step by step.
+Perfect! I can see you've started creating the `main.py` file. Now let me give you the complete content to paste in there:
 
-## 📁 **File 1: cursor_proxy_server.py (The Hosted "Cursor AI")**
+[1 tool called]
 
-**Your Task:**
-1. Go to https://github.com/phaniblend/ragrail
-2. Click **"Add file"** → **"Create new file"**
-3. **File name**: `cursor_proxy_server.py`
-4. **Content**: Copy and paste this entire code:
+**Copy this entire content and paste it into your `main.py` file on GitHub:**
 
 ```python
 """
@@ -61,10 +57,6 @@ class AIProxyService:
         """Analyze React component and generate appropriate response"""
         if task_type == "test_generation":
             return self.generate_unit_tests(component_code)
-        elif task_type == "code_review":
-            return self.review_code(component_code)
-        elif task_type == "optimization":
-            return self.optimize_code(component_code)
         else:
             return self.general_analysis(component_code)
     
@@ -240,5 +232,14 @@ def cursor_analyze():
         return jsonify({
             'success': False,
             'error': f'Analysis failed: {str(e)}'
-        }), 500</parameter>
-</invoke>
+        }), 500
+
+if __name__ == '__main__':
+    print("🚀 Starting Cursor AI Proxy Server")
+    print("==================================")
+    print(f"🔑 Anthropic API: {'✅' if os.getenv('ANTHROPIC_API_KEY') else '❌'}")
+    print("🌐 This server mimics Cursor AI functionality")
+    print("🔄 Acts as proxy between your middleware and AI services")
+    
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)), debug=False)
+```
