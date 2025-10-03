@@ -205,6 +205,90 @@
             z-index: 1000;
             display: none;
         }
+        .interactive-tester {
+            background: #e8f5e8;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .interactive-header {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid #28a745;
+        }
+        .interactive-title {
+            color: #155724;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .interactive-subtitle {
+            color: #155724;
+            font-size: 14px;
+        }
+        .interactive-content {
+            padding: 25px;
+        }
+        .component-input {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+        .test-results {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        .btn-primary {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background: #218838;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn-copy {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -330,15 +414,72 @@ const StyledButton = styled.button`
             <div class="tools-container">
                 <h2 class="section-title">📋 Project Analysis Tools</h2>
 
+                <!-- Interactive Component Tester -->
+                <div class="interactive-tester">
+                    <div class="interactive-header">
+                        <div class="interactive-title">🧪 Interactive Component Quality Checker</div>
+                        <div class="interactive-subtitle">Paste your React component and get comprehensive quality checks instantly!</div>
+                    </div>
+                    <div class="interactive-content">
+                        <textarea 
+                            id="componentInput" 
+                            class="component-input"
+                            placeholder="Paste your React component code here...
+
+Example:
+import { useIsMutating } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { PrismLoading } from '@prism-ui/react';
+
+export type MapViewProps = {
+  mutationKey: string[];
+};
+
+const MapView = (props: MapViewProps) => {
+  const { mutationKey } = props;
+  const [showLoader, setShowLoader] = useState(false);
+  const isGoogleApiMutating = useIsMutating({ mutationKey: mutationKey });
+
+  useEffect(() => {
+    if (isGoogleApiMutating > 0) {
+      setShowLoader(true);
+    } else {
+      setShowLoader(false);
+    }
+  }, [isGoogleApiMutating]);
+
+  return (
+    <div data-testid='map-view-container'>
+      {showLoader ? (
+        <PrismLoading data-testid='prism-loading' />
+      ) : (
+        <div id='map' data-testid='map'></div>
+      )}
+    </div>
+  );
+};"
+                        ></textarea>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <button onclick="generateTests()" class="btn-primary">🚀 Generate Quality Checks</button>
+                            <button onclick="clearResults()" class="btn-secondary">🗑️ Clear</button>
+                            <button onclick="loadExample()" class="btn-secondary">📋 Load Example</button>
+                        </div>
+                        
+                        <div id="testResults" class="test-results"></div>
+                        <button id="copyTestsBtn" onclick="copyTests()" class="btn-copy">📋 Copy Quality Checks</button>
+                    </div>
+                </div>
+
                 <div class="instructions-panel">
                     <h4>📝 How to Use These Tools</h4>
                     <ol>
-                        <li>Copy the first script and save it as <code>analyze-structure.js</code></li>
-                        <li>Run it on your project folder to identify important files</li>
-                        <li>Copy the second script and save it as <code>consolidate-code.js</code></li>
-                        <li>Run it to combine all important files into one document</li>
-                        <li>If the output is large, use the third script to break it into smaller pieces</li>
-                        <li>Copy the pieces into online coding assistants for help with your project</li>
+                        <li><strong>Interactive Tester:</strong> Paste your component above and click "Generate Quality Checks"</li>
+                        <li><strong>Local Analysis:</strong> Copy the scripts below for offline codebase analysis</li>
+                        <li>Run local scripts on your project folder to identify important files</li>
+                        <li>Combine files into one document for comprehensive analysis</li>
+                        <li>Break large files into smaller pieces for better processing</li>
+                        <li>Use with online coding assistants for expert help</li>
                     </ol>
                 </div>
 
@@ -364,11 +505,6 @@ const StyledButton = styled.button`
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Project Structure Analyzer
- * Identifies important files that coding assistants need to understand your project
- */
-
 class ProjectAnalyzer {
     constructor(rootPath) {
         this.rootPath = path.resolve(rootPath);
@@ -377,102 +513,46 @@ class ProjectAnalyzer {
         this.dependencies = new Set();
         this.frameworks = new Set();
         
-        // Important file patterns
         this.importantPatterns = {
-            config: [
-                'package.json', 'package-lock.json', 'yarn.lock',
-                'tsconfig.json', 'jsconfig.json',
-                'webpack.config.js', 'vite.config.js', 'rollup.config.js',
-                '.babelrc', 'babel.config.js',
-                'eslint.config.js', '.eslintrc.*',
-                'prettier.config.js', '.prettierrc.*',
-                'tailwind.config.js', 'postcss.config.js',
-                'next.config.js', 'nuxt.config.js', 'vue.config.js',
-                'angular.json', 'nest-cli.json',
-                'Dockerfile', 'docker-compose.yml',
-                '.env*', 'README.md', 'CHANGELOG.md'
-            ],
-            entry: [
-                'index.*', 'main.*', 'app.*', 'App.*',
-                'server.*', 'index.html',
-                'src/index.*', 'src/main.*', 'src/app.*',
-                'public/index.html'
-            ],
-            types: [
-                '*.d.ts', 'types/**/*', 'typings/**/*',
-                'schema.*', 'models/**/*', 'entities/**/*',
-                'interfaces/**/*', 'types.ts', 'constants.ts'
-            ],
-            routing: [
-                'routes/**/*', 'router/**/*', 'pages/**/*',
-                'navigation.*', 'routing.*',
-                'src/routes/**/*', 'src/pages/**/*'
-            ],
-            state: [
-                'store/**/*', 'stores/**/*', 'state/**/*',
-                'redux/**/*', 'reducers/**/*', 'actions/**/*',
-                'context/**/*', 'providers/**/*',
-                'hooks/**/*', 'composables/**/*'
-            ],
-            api: [
-                'api/**/*', 'services/**/*', 'lib/**/*',
-                'utils/**/*', 'helpers/**/*',
-                'controllers/**/*', 'middleware/**/*',
-                'graphql/**/*', 'queries/**/*'
-            ],
-            components: [
-                'components/**/*', 'src/components/**/*'
-            ]
+            config: ['package.json', 'tsconfig.json', 'webpack.config.js', 'vite.config.js'],
+            entry: ['index.*', 'main.*', 'app.*', 'App.*', 'src/index.*'],
+            types: ['*.d.ts', 'types/**/*', 'interfaces/**/*'],
+            components: ['components/**/*', 'src/components/**/*'],
+            api: ['api/**/*', 'services/**/*', 'utils/**/*']
         };
         
-        this.codeExtensions = new Set([
-            '.js', '.jsx', '.ts', '.tsx', '.vue', '.svelte',
-            '.py', '.rb', '.php', '.java', '.cs', '.cpp', '.c',
-            '.go', '.rs', '.swift', '.kt', '.dart',
-            '.html', '.css', '.scss', '.sass', '.less',
-            '.json', '.yaml', '.yml', '.toml', '.xml',
-            '.md', '.mdx', '.sql', '.graphql', '.gql'
-        ]);
-        
-        this.ignorePatterns = new Set([
-            'node_modules', '.git', '.next', '.nuxt', 'dist', 'build',
-            'coverage', '.nyc_output', 'logs', '*.log',
-            '.DS_Store', 'Thumbs.db', '.vscode', '.idea',
-            'vendor', 'venv', '__pycache__', '*.pyc',
-            'target', 'bin', 'obj', '*.class'
-        ]);
+        this.codeExtensions = new Set(['.js', '.jsx', '.ts', '.tsx', '.json', '.md']);
+        this.ignorePatterns = new Set(['node_modules', '.git', 'dist', 'build']);
+    }
+    
+    analyze() {
+        console.log('🚀 Analyzing project structure...');
+        this.scanDirectory(this.rootPath);
+        return this.generateReport();
+    }
+    
+    scanDirectory(dirPath) {
+        try {
+            const entries = fs.readdirSync(dirPath);
+            for (const entry of entries) {
+                const fullPath = path.join(dirPath, entry);
+                if (this.shouldIgnore(fullPath)) continue;
+                
+                const stats = fs.statSync(fullPath);
+                if (stats.isDirectory()) {
+                    this.scanDirectory(fullPath);
+                } else {
+                    this.analyzeFile(fullPath);
+                }
+            }
+        } catch (error) {
+            console.warn(`Warning: Could not scan ${dirPath}`);
+        }
     }
     
     shouldIgnore(filePath) {
         const relativePath = path.relative(this.rootPath, filePath);
-        return Array.from(this.ignorePatterns).some(pattern => {
-            if (pattern.includes('*')) {
-                const regex = new RegExp(pattern.replace(/\*/g, '.*'));
-                return regex.test(relativePath);
-            }
-            return relativePath.includes(pattern);
-        });
-    }
-    
-    isCodeFile(filePath) {
-        const ext = path.extname(filePath).toLowerCase();
-        return this.codeExtensions.has(ext);
-    }
-    
-    matchesPattern(filePath, patterns) {
-        const relativePath = path.relative(this.rootPath, filePath);
-        const fileName = path.basename(filePath);
-        
-        return patterns.some(pattern => {
-            if (pattern.includes('*')) {
-                const regex = new RegExp(pattern.replace(/\*/g, '.*').replace(/\//g, '\\/'));
-                return regex.test(relativePath) || regex.test(fileName);
-            }
-            if (pattern.includes('/')) {
-                return relativePath.includes(pattern) || relativePath.startsWith(pattern);
-            }
-            return fileName === pattern || fileName.includes(pattern);
-        });
+        return Array.from(this.ignorePatterns).some(pattern => relativePath.includes(pattern));
     }
     
     analyzeFile(filePath) {
@@ -481,213 +561,69 @@ class ProjectAnalyzer {
             if (!stats.isFile() || this.shouldIgnore(filePath)) return;
             
             const ext = path.extname(filePath).toLowerCase();
-            const fileName = path.basename(filePath);
             const relativePath = path.relative(this.rootPath, filePath);
             
             this.fileTypes.set(ext, (this.fileTypes.get(ext) || 0) + 1);
             
-            let isImportant = false;
-            let reason = '';
-            
             for (const [category, patterns] of Object.entries(this.importantPatterns)) {
                 if (this.matchesPattern(filePath, patterns)) {
-                    isImportant = true;
-                    reason = category;
+                    this.importantFiles.add({
+                        path: relativePath,
+                        size: stats.size,
+                        category: category
+                    });
                     break;
                 }
             }
-            
-            if (fileName === 'package.json') {
-                this.analyzePackageJson(filePath);
-            }
-            
-            if (this.isCodeFile(filePath) && stats.size < 100000) {
-                this.analyzeImports(filePath);
-            }
-            
-            if (isImportant) {
-                this.importantFiles.add({
-                    path: relativePath,
-                    fullPath: filePath,
-                    size: stats.size,
-                    reason: reason,
-                    extension: ext
-                });
-            }
-            
         } catch (error) {
-            console.warn(`Warning: Could not analyze ${filePath}: ${error.message}`);
+            console.warn(`Warning: Could not analyze ${filePath}`);
         }
     }
     
-    analyzePackageJson(filePath) {
-        try {
-            const content = fs.readFileSync(filePath, 'utf8');
-            const pkg = JSON.parse(content);
-            
-            const allDeps = {
-                ...pkg.dependencies,
-                ...pkg.devDependencies,
-                ...pkg.peerDependencies
-            };
-            
-            Object.keys(allDeps).forEach(dep => {
-                this.dependencies.add(dep);
-                
-                if (dep.includes('react')) this.frameworks.add('React');
-                if (dep.includes('vue')) this.frameworks.add('Vue');
-                if (dep.includes('angular')) this.frameworks.add('Angular');
-                if (dep.includes('svelte')) this.frameworks.add('Svelte');
-                if (dep.includes('next')) this.frameworks.add('Next.js');
-                if (dep.includes('nuxt')) this.frameworks.add('Nuxt.js');
-                if (dep.includes('express')) this.frameworks.add('Express');
-                if (dep.includes('fastify')) this.frameworks.add('Fastify');
-                if (dep.includes('nest')) this.frameworks.add('NestJS');
-                if (dep.includes('django')) this.frameworks.add('Django');
-                if (dep.includes('flask')) this.frameworks.add('Flask');
-                if (dep.includes('spring')) this.frameworks.add('Spring');
-            });
-            
-        } catch (error) {
-            console.warn(`Warning: Could not parse package.json: ${error.message}`);
-        }
-    }
-    
-    analyzeImports(filePath) {
-        try {
-            const content = fs.readFileSync(filePath, 'utf8');
-            const ext = path.extname(filePath);
-            
-            let importRegex;
-            if (['.js', '.jsx', '.ts', '.tsx'].includes(ext)) {
-                importRegex = /import\s+.*?\s+from\s+['"`]([^'"`]+)['"`]/g;
-            } else if (ext === '.py') {
-                importRegex = /(?:from\s+(\S+)\s+import|import\s+(\S+))/g;
+    matchesPattern(filePath, patterns) {
+        const relativePath = path.relative(this.rootPath, filePath);
+        const fileName = path.basename(filePath);
+        
+        return patterns.some(pattern => {
+            if (pattern.includes('*')) {
+                const regex = new RegExp(pattern.replace(/\*/g, '.*'));
+                return regex.test(relativePath);
             }
-            
-            if (importRegex) {
-                let match;
-                while ((match = importRegex.exec(content)) !== null) {
-                    const importPath = match[1] || match[2];
-                    if (importPath && !importPath.startsWith('.') && !importPath.startsWith('/')) {
-                        this.dependencies.add(importPath.split('/')[0]);
-                    }
-                }
-            }
-            
-        } catch (error) {
-            // Ignore errors
-        }
-    }
-    
-    scanDirectory(dirPath) {
-        try {
-            const entries = fs.readdirSync(dirPath);
-            
-            for (const entry of entries) {
-                const fullPath = path.join(dirPath, entry);
-                
-                if (this.shouldIgnore(fullPath)) continue;
-                
-                const stats = fs.statSync(fullPath);
-                
-                if (stats.isDirectory()) {
-                    this.scanDirectory(fullPath);
-                } else {
-                    this.analyzeFile(fullPath);
-                }
-            }
-        } catch (error) {
-            console.warn(`Warning: Could not scan directory ${dirPath}: ${error.message}`);
-        }
+            return fileName === pattern || relativePath.includes(pattern);
+        });
     }
     
     generateReport() {
-        const importantFilesArray = Array.from(this.importantFiles).sort((a, b) => {
-            if (a.reason !== b.reason) {
-                return a.reason.localeCompare(b.reason);
-            }
-            return a.path.localeCompare(b.path);
-        });
+        const files = Array.from(this.importantFiles).sort((a, b) => a.path.localeCompare(b.path));
         
         console.log('\n📋 PROJECT ANALYSIS REPORT');
-        console.log('==========================\n');
+        console.log('==========================');
+        console.log(`Total Important Files: ${files.length}`);
         
-        console.log('📊 PROJECT OVERVIEW:');
-        console.log(`   Root Path: ${this.rootPath}`);
-        console.log(`   Detected Frameworks: ${Array.from(this.frameworks).join(', ') || 'None detected'}`);
-        console.log(`   Total Important Files: ${importantFilesArray.length}`);
-        console.log(`   File Types Found: ${this.fileTypes.size}`);
-        
-        console.log('\n🎯 IMPORTANT FILES FOR ANALYSIS:');
-        console.log('=================================\n');
-        
-        const groupedFiles = {};
-        importantFilesArray.forEach(file => {
-            if (!groupedFiles[file.reason]) {
-                groupedFiles[file.reason] = [];
-            }
-            groupedFiles[file.reason].push(file);
+        const grouped = {};
+        files.forEach(file => {
+            if (!grouped[file.category]) grouped[file.category] = [];
+            grouped[file.category].push(file);
         });
         
-        Object.entries(groupedFiles).forEach(([reason, files]) => {
-            console.log(`📁 ${reason.toUpperCase()}:`);
-            files.forEach(file => {
-                const sizeKB = (file.size / 1024).toFixed(1);
-                console.log(`   ✓ ${file.path} (${sizeKB} KB)`);
+        Object.entries(grouped).forEach(([category, categoryFiles]) => {
+            console.log(`\n📁 ${category.toUpperCase()}:`);
+            categoryFiles.forEach(file => {
+                console.log(`   ✓ ${file.path} (${(file.size/1024).toFixed(1)}KB)`);
             });
-            console.log('');
         });
         
-        console.log('📋 FILE TYPE DISTRIBUTION:');
-        const sortedTypes = Array.from(this.fileTypes.entries()).sort((a, b) => b[1] - a[1]);
-        sortedTypes.slice(0, 10).forEach(([ext, count]) => {
-            console.log(`   ${ext || 'no extension'}: ${count} files`);
-        });
-        
-        console.log('\n🔧 KEY DEPENDENCIES:');
-        const keyDeps = Array.from(this.dependencies)
-            .filter(dep => !dep.startsWith('@types/'))
-            .slice(0, 15);
-        keyDeps.forEach(dep => console.log(`   • ${dep}`));
-        
-        console.log('\n📝 NEXT STEPS:');
-        console.log('1. Review the important files list above');
-        console.log('2. Run the second script to combine all files');
-        console.log('3. Use the combined output with online coding assistants');
-        
-        return importantFilesArray;
-    }
-    
-    analyze() {
-        console.log(`🚀 Analyzing project at: ${this.rootPath}`);
-        console.log('This may take a moment for large projects...\n');
-        
-        if (!fs.existsSync(this.rootPath)) {
-            throw new Error(`Path does not exist: ${this.rootPath}`);
-        }
-        
-        const startTime = Date.now();
-        this.scanDirectory(this.rootPath);
-        const endTime = Date.now();
-        
-        console.log(`⚡ Analysis completed in ${endTime - startTime}ms`);
-        
-        return this.generateReport();
+        return files;
     }
 }
 
-// Usage
 if (require.main === module) {
     const projectPath = process.argv[2] || process.cwd();
-    
     try {
         const analyzer = new ProjectAnalyzer(projectPath);
         analyzer.analyze();
     } catch (error) {
         console.error(`❌ Error: ${error.message}`);
-        console.log('\n📖 Usage: node analyze-structure.js [project-path]');
-        console.log('   If no path is provided, current directory will be used.');
         process.exit(1);
     }
 }</div>
@@ -704,706 +640,88 @@ if (require.main === module) {
 const fs = require('fs');
 const path = require('path');
 
-/**
- * File Consolidator
- * Combines all important project files into one document
- * for easy sharing with coding assistants
- */
-
 class FileConsolidator {
-    constructor(rootPath, options = {}) {
+    constructor(rootPath) {
         this.rootPath = path.resolve(rootPath);
-        this.options = {
-            maxFileSize: options.maxFileSize || 50000,
-            maxTotalSize: options.maxTotalSize || 500000,
-            includeComments: options.includeComments !== false,
-            includeTests: options.includeTests || false,
-            outputFile: options.outputFile || 'project-files.txt',
-            ...options
-        };
-        
         this.consolidatedCode = [];
-        this.totalSize = 0;
         this.filesIncluded = 0;
-        this.filesSkipped = 0;
-        
-        this.importantPatterns = {
-            config: [
-                'package.json', 'tsconfig.json', 'jsconfig.json',
-                'webpack.config.js', 'vite.config.js', 'next.config.js',
-                '.babelrc', 'babel.config.js', 'tailwind.config.js',
-                'README.md'
-            ],
-            entry: [
-                'index.*', 'main.*', 'app.*', 'App.*',
-                'src/index.*', 'src/main.*', 'src/app.*'
-            ],
-            types: [
-                '*.d.ts', 'types/**/*', 'models/**/*', 'interfaces/**/*',
-                'types.ts', 'constants.ts', 'enums.ts'
-            ],
-            routing: [
-                'routes/**/*', 'router/**/*', 'pages/**/*',
-                'src/routes/**/*', 'src/pages/**/*'
-            ],
-            state: [
-                'store/**/*', 'stores/**/*', 'context/**/*',
-                'hooks/**/*', 'composables/**/*'
-            ],
-            api: [
-                'api/**/*', 'services/**/*', 'lib/**/*',
-                'utils/**/*', 'helpers/**/*'
-            ],
-            components: [
-                'components/**/*', 'src/components/**/*'
-            ]
-        };
-        
-        this.codeExtensions = new Set([
-            '.js', '.jsx', '.ts', '.tsx', '.vue', '.svelte',
-            '.py', '.rb', '.php', '.java', '.cs',
-            '.go', '.rs', '.swift', '.kt',
-            '.html', '.css', '.scss', '.json', '.md'
-        ]);
-        
-        this.ignorePatterns = new Set([
-            'node_modules', '.git', '.next', 'dist', 'build',
-            'coverage', '.nyc_output', 'logs',
-            '.DS_Store', '.vscode', '.idea',
-            'vendor', 'venv', '__pycache__',
-            'target', 'bin', 'obj'
-        ]);
-        
-        this.testPatterns = new Set([
-            '*.test.*', '*.spec.*', '__tests__/**/*',
-            'tests/**/*', 'test/**/*', 'spec/**/*'
-        ]);
     }
     
-    shouldIgnore(filePath) {
-        const relativePath = path.relative(this.rootPath, filePath);
+    consolidate() {
+        console.log('🚀 Consolidating project files...');
+        this.scanDirectory(this.rootPath);
         
-        if (Array.from(this.ignorePatterns).some(pattern => relativePath.includes(pattern))) {
-            return true;
-        }
-        
-        if (!this.options.includeTests) {
-            return Array.from(this.testPatterns).some(pattern => {
-                const regex = new RegExp(pattern.replace(/\*/g, '.*'));
-                return regex.test(relativePath);
-            });
-        }
-        
-        return false;
-    }
-    
-    isCodeFile(filePath) {
-        const ext = path.extname(filePath).toLowerCase();
-        return this.codeExtensions.has(ext);
-    }
-    
-    matchesPattern(filePath, patterns) {
-        const relativePath = path.relative(this.rootPath, filePath);
-        const fileName = path.basename(filePath);
-        
-        return patterns.some(pattern => {
-            if (pattern.includes('*')) {
-                const regex = new RegExp(pattern.replace(/\*/g, '.*').replace(/\//g, '\\/'));
-                return regex.test(relativePath) || regex.test(fileName);
-            }
-            if (pattern.includes('/')) {
-                return relativePath.includes(pattern) || relativePath.startsWith(pattern);
-            }
-            return fileName === pattern || fileName.includes(pattern);
-        });
-    }
-    
-    isImportantFile(filePath) {
-        for (const [category, patterns] of Object.entries(this.importantPatterns)) {
-            if (this.matchesPattern(filePath, patterns)) {
-                return { important: true, category };
-            }
-        }
-        return { important: false, category: null };
-    }
-    
-    processFile(filePath) {
-        try {
-            const stats = fs.statSync(filePath);
-            if (!stats.isFile() || this.shouldIgnore(filePath)) return false;
-            
-            if (!this.isCodeFile(filePath)) return false;
-            
-            if (stats.size > this.options.maxFileSize) {
-                console.log(`⚠️  Skipping ${path.relative(this.rootPath, filePath)} (too large: ${(stats.size/1024).toFixed(1)}KB)`);
-                this.filesSkipped++;
-                return false;
-            }
-            
-            if (this.totalSize + stats.size > this.options.maxTotalSize) {
-                console.log(`⚠️  Stopping consolidation (total size limit reached)`);
-                return false;
-            }
-            
-            const content = fs.readFileSync(filePath, 'utf8');
-            const relativePath = path.relative(this.rootPath, filePath);
-            const { important, category } = this.isImportantFile(filePath);
-            
-            let processedContent = content;
-            
-            if (!this.options.includeComments) {
-                processedContent = this.removeComments(processedContent, path.extname(filePath));
-            }
-            
-            const fileSection = this.formatFileSection(relativePath, processedContent, category, stats.size);
-            this.consolidatedCode.push(fileSection);
-            this.totalSize += stats.size;
-            this.filesIncluded++;
-            
-            console.log(`✓ Added ${relativePath} (${(stats.size/1024).toFixed(1)}KB)${important ? ` [${category}]` : ''}`);
-            
-            return true;
-            
-        } catch (error) {
-            console.warn(`Warning: Could not process ${filePath}: ${error.message}`);
-            return false;
-        }
-    }
-    
-    removeComments(content, extension) {
-        if (['.js', '.jsx', '.ts', '.tsx'].includes(extension)) {
-            content = content.replace(/\/\/.*$/gm, '');
-            content = content.replace(/\/\*[\s\S]*?\*\//g, '');
-        } else if (extension === '.py') {
-            content = content.replace(/#.*$/gm, '');
-            content = content.replace(/"""[\s\S]*?"""/g, '');
-            content = content.replace(/'''[\s\S]*?'''/g, '');
-        } else if (extension === '.css' || extension === '.scss') {
-            content = content.replace(/\/\*[\s\S]*?\*\//g, '');
-        }
-        
-        content = content.replace(/\n\s*\n\s*\n/g, '\n\n');
-        return content.trim();
-    }
-    
-    formatFileSection(relativePath, content, category, size) {
-        const separator = '='.repeat(80);
-        const header = `FILE: ${relativePath}`;
-        const metadata = `Size: ${(size/1024).toFixed(1)}KB${category ? ` | Category: ${category}` : ''}`;
-        
-        return `${separator}
-${header}
-${metadata}
-${separator}
-
-${content}
+        const header = `PROJECT CONSOLIDATION
+Generated: ${new Date().toISOString()}
+Files: ${this.filesIncluded}
 
 `;
+        const content = header + this.consolidatedCode.join('\n');
+        
+        fs.writeFileSync('consolidated-project.txt', content);
+        console.log(`✅ Saved consolidated-project.txt (${this.filesIncluded} files)`);
+        
+        return content;
     }
     
-    scanDirectory(dirPath, priority = 0) {
+    scanDirectory(dirPath) {
         try {
             const entries = fs.readdirSync(dirPath);
-            
-            const files = [];
-            const dirs = [];
-            
             for (const entry of entries) {
                 const fullPath = path.join(dirPath, entry);
                 if (this.shouldIgnore(fullPath)) continue;
                 
                 const stats = fs.statSync(fullPath);
                 if (stats.isDirectory()) {
-                    dirs.push(fullPath);
-                } else {
-                    const { important, category } = this.isImportantFile(fullPath);
-                    files.push({ path: fullPath, important, category, priority: important ? 1 : 0 });
+                    this.scanDirectory(fullPath);
+                } else if (this.isCodeFile(fullPath)) {
+                    this.processFile(fullPath);
                 }
             }
-            
-            files.sort((a, b) => b.priority - a.priority);
-            
-            for (const file of files) {
-                if (this.totalSize >= this.options.maxTotalSize) break;
-                this.processFile(file.path);
-            }
-            
-            for (const dir of dirs) {
-                if (this.totalSize >= this.options.maxTotalSize) break;
-                this.scanDirectory(dir, priority + 1);
-            }
-            
         } catch (error) {
-            console.warn(`Warning: Could not scan directory ${dirPath}: ${error.message}`);
+            console.warn(`Warning: Could not scan ${dirPath}`);
         }
     }
     
-    generateHeader() {
-        const timestamp = new Date().toISOString();
-        const projectName = path.basename(this.rootPath);
-        
-        return `PROJECT FILES CONSOLIDATION
-==============================
+    shouldIgnore(filePath) {
+        const ignored = ['node_modules', '.git', 'dist', 'build', '.next'];
+        return ignored.some(pattern => filePath.includes(pattern));
+    }
+    
+    isCodeFile(filePath) {
+        const ext = path.extname(filePath).toLowerCase();
+        return ['.js', '.jsx', '.ts', '.tsx', '.json', '.md'].includes(ext);
+    }
+    
+    processFile(filePath) {
+        try {
+            const content = fs.readFileSync(filePath, 'utf8');
+            const relativePath = path.relative(this.rootPath, filePath);
+            
+            const section = `${'='.repeat(80)}
+FILE: ${relativePath}
+${'='.repeat(80)}
 
-Project: ${projectName}
-Path: ${this.rootPath}
-Generated: ${timestamp}
-Files Included: ${this.filesIncluded}
-Files Skipped: ${this.filesSkipped}
-Total Size: ${(this.totalSize/1024).toFixed(1)}KB
-
-INSTRUCTIONS FOR CODING ASSISTANTS:
-- This is a consolidated view of the most important files in the project
-- Each file section is clearly marked with separators
-- Use this context to understand the project structure and provide accurate help
-- Focus on the configuration, entry points, types, and core components
-
-==============================
+${content}
 
 `;
-    }
-    
-    consolidate() {
-        console.log(`🚀 Consolidating project at: ${this.rootPath}`);
-        console.log(`📋 Options:`, this.options);
-        console.log('');
-        
-        if (!fs.existsSync(this.rootPath)) {
-            throw new Error(`Path does not exist: ${this.rootPath}`);
+            
+            this.consolidatedCode.push(section);
+            this.filesIncluded++;
+            console.log(`✓ Added ${relativePath}`);
+        } catch (error) {
+            console.warn(`Warning: Could not process ${filePath}`);
         }
-        
-        const startTime = Date.now();
-        this.scanDirectory(this.rootPath);
-        const endTime = Date.now();
-        
-        const header = this.generateHeader();
-        const fullContent = header + this.consolidatedCode.join('\n');
-        
-        const outputPath = path.resolve(this.options.outputFile);
-        fs.writeFileSync(outputPath, fullContent, 'utf8');
-        
-        console.log('\n📊 CONSOLIDATION COMPLETE');
-        console.log('========================');
-        console.log(`⚡ Completed in ${endTime - startTime}ms`);
-        console.log(`📁 Files included: ${this.filesIncluded}`);
-        console.log(`⚠️  Files skipped: ${this.filesSkipped}`);
-        console.log(`📏 Total size: ${(this.totalSize/1024).toFixed(1)}KB`);
-        console.log(`💾 Output file: ${outputPath}`);
-        console.log(`📋 Content length: ${fullContent.length.toLocaleString()} characters`);
-        
-        console.log('\n🎯 NEXT STEPS:');
-        console.log('1. Open the generated file in a text editor');
-        console.log('2. Copy the entire content');
-        console.log('3. Paste it into your preferred coding assistant');
-        console.log('4. Ask for help with your project!');
-        
-        return {
-            outputPath,
-            filesIncluded: this.filesIncluded,
-            filesSkipped: this.filesSkipped,
-            totalSize: this.totalSize,
-            contentLength: fullContent.length
-        };
     }
 }
 
-// Usage
 if (require.main === module) {
-    const args = process.argv.slice(2);
-    const projectPath = args[0] || process.cwd();
-    
-    const options = {};
-    for (let i = 1; i < args.length; i += 2) {
-        const key = args[i].replace('--', '');
-        const value = args[i + 1];
-        
-        if (key === 'max-file-size') options.maxFileSize = parseInt(value);
-        if (key === 'max-total-size') options.maxTotalSize = parseInt(value);
-        if (key === 'output') options.outputFile = value;
-        if (key === 'no-comments') options.includeComments = false;
-        if (key === 'include-tests') options.includeTests = true;
-    }
-    
+    const projectPath = process.argv[2] || process.cwd();
     try {
-        const consolidator = new FileConsolidator(projectPath, options);
+        const consolidator = new FileConsolidator(projectPath);
         consolidator.consolidate();
     } catch (error) {
         console.error(`❌ Error: ${error.message}`);
-        console.log('\n📖 Usage: node consolidate-code.js [project-path] [options]');
-        console.log('Options:');
-        console.log('  --max-file-size [bytes]   Maximum size per file (default: 50000)');
-        console.log('  --max-total-size [bytes]  Maximum total size (default: 500000)');
-        console.log('  --output [filename]       Output filename (default: project-files.txt)');
-        console.log('  --no-comments            Remove comments from code');
-        console.log('  --include-tests          Include test files');
-        process.exit(1);
-    }
-}</div>
-                </div>
-
-                <!-- Tool 3: File Splitter -->
-                <div class="tool-section">
-                    <div class="tool-header">
-                        <div class="tool-title">🧩 Tool 3: Large File Splitter</div>
-                        <button class="copy-btn" onclick="copyTool('tool3')">Copy Script</button>
-                    </div>
-                    <div class="tool-content" id="tool3">#!/usr/bin/env node
-
-const fs = require('fs');
-const path = require('path');
-
-/**
- * Large File Splitter
- * Breaks large consolidated files into smaller pieces
- * that are easier to work with in online coding assistants
- */
-
-class FileSplitter {
-    constructor(options = {}) {
-        this.options = {
-            chunkSize: options.chunkSize || 5000,
-            contextOverlap: options.contextOverlap || 200,
-            strategy: options.strategy || 'file',
-            includeIndex: options.includeIndex !== false,
-            addInstructions: options.addInstructions !== false,
-            outputDir: options.outputDir || 'chunks',
-            ...options
-        };
-        
-        this.chunks = [];
-        this.fileIndex = [];
-        this.stats = {
-            totalLines: 0,
-            totalFiles: 0,
-            chunksCreated: 0,
-            processingTime: 0
-        };
-    }
-    
-    parseConsolidatedFile(filePath) {
-        console.log(`📖 Reading consolidated file: ${filePath}`);
-        
-        const content = fs.readFileSync(filePath, 'utf8');
-        const lines = content.split('\n');
-        
-        this.extractFileIndex(lines);
-        
-        this.stats.totalLines = lines.length;
-        this.stats.totalFiles = this.fileIndex.length;
-        
-        console.log(`📊 File contains ${lines.length.toLocaleString()} lines across ${this.fileIndex.length} files`);
-        
-        return lines;
-    }
-    
-    extractFileIndex(lines) {
-        this.fileIndex = [];
-        
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
-            
-            if (line.includes('================') && i + 1 < lines.length) {
-                const nextLine = lines[i + 1];
-                if (nextLine.startsWith('FILE:')) {
-                    const fileName = nextLine.replace('FILE:', '').trim();
-                    this.fileIndex.push({
-                        name: fileName,
-                        startLine: i,
-                        separator: line
-                    });
-                }
-            }
-        }
-        
-        console.log(`📁 Detected ${this.fileIndex.length} files in consolidated output`);
-    }
-    
-    createChunks(lines) {
-        console.log(`🧩 Creating chunks with strategy: ${this.options.strategy}`);
-        
-        const chunks = [];
-        let currentChunk = [];
-        let currentChunkLines = 0;
-        let chunkIndex = 1;
-        
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
-            
-            const isFileBoundary = this.isFileBoundary(line, i, lines);
-            
-            if (this.options.strategy === 'file' && isFileBoundary && currentChunk.length > 0) {
-                chunks.push(this.formatChunk(currentChunk, chunkIndex++, false));
-                currentChunk = [];
-                currentChunkLines = 0;
-            }
-            
-            currentChunk.push(line);
-            currentChunkLines++;
-            
-            if (currentChunkLines >= this.options.chunkSize) {
-                const overlapStart = Math.min(i + 1, lines.length);
-                const overlapEnd = Math.min(overlapStart + this.options.contextOverlap, lines.length);
-                const overlapLines = lines.slice(overlapStart, overlapEnd);
-                
-                const chunkWithOverlap = [...currentChunk, ...overlapLines];
-                chunks.push(this.formatChunk(chunkWithOverlap, chunkIndex++, true));
-                
-                currentChunk = overlapLines.slice();
-                currentChunkLines = currentChunk.length;
-            }
-        }
-        
-        if (currentChunk.length > 0) {
-            chunks.push(this.formatChunk(currentChunk, chunkIndex, false));
-        }
-        
-        this.chunks = chunks;
-        this.stats.chunksCreated = chunks.length;
-        
-        console.log(`✅ Created ${chunks.length} chunks`);
-        return chunks;
-    }
-    
-    isFileBoundary(line, index, lines) {
-        if (line.includes('================')) {
-            if (index + 1 < lines.length && lines[index + 1].startsWith('FILE:')) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    formatChunk(lines, chunkIndex, hasOverlap) {
-        let content = lines.join('\n');
-        
-        if (this.options.addInstructions) {
-            const instructions = `CHUNK ${chunkIndex} OF ${this.stats.chunksCreated || '?'} - PROJECT ANALYSIS
-${'='.repeat(70)}
-
-CONTEXT FOR CODING ASSISTANT:
-- This is chunk ${chunkIndex} from a larger project analysis
-- Each file section begins with "FILE: filename" 
-- Files are separated by "================" lines
-- This chunk contains ${lines.length} lines of code and context
-${hasOverlap ? '- This chunk includes overlap from the next section for continuity' : ''}
-
-INSTRUCTIONS FOR ASSISTANCE:
-- Analyze each function, class, and method in this chunk
-- Identify all code paths and potential issues
-- Note external dependencies that might need attention
-- Find areas that could be improved or optimized
-- Suggest best practices and coding standards
-- Focus on providing practical, actionable advice
-- If you need context from other chunks, please ask
-
-${'='.repeat(70)}
-
-`;
-            content = instructions + content;
-        }
-        
-        if (this.options.includeIndex && chunkIndex === 1) {
-            const indexContent = `PROJECT FILE INDEX (${this.fileIndex.length} files):
-${this.fileIndex.map((f, i) => `${i + 1}. ${f.name}`).join('\n')}
-
-${'='.repeat(70)}
-
-`;
-            content = indexContent + content;
-        }
-        
-        return {
-            index: chunkIndex,
-            content: content,
-            lines: lines.length,
-            size: content.length,
-            hasOverlap: hasOverlap
-        };
-    }
-    
-    saveChunks(outputDir) {
-        if (!fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir, { recursive: true });
-        }
-        
-        console.log(`💾 Saving ${this.chunks.length} chunks to ${outputDir}/`);
-        
-        const savedFiles = [];
-        
-        this.chunks.forEach(chunk => {
-            const fileName = `chunk_${chunk.index.toString().padStart(2, '0')}.txt`;
-            const filePath = path.join(outputDir, fileName);
-            
-            fs.writeFileSync(filePath, chunk.content, 'utf8');
-            savedFiles.push(fileName);
-            
-            console.log(`  ✓ Saved ${fileName} (${chunk.lines} lines, ${(chunk.size/1024).toFixed(1)}KB)`);
-        });
-        
-        const indexContent = `CHUNK INDEX - Generated ${new Date().toISOString()}
-${'='.repeat(60)}
-
-Project Analysis: ${this.stats.totalFiles} files, ${this.stats.totalLines.toLocaleString()} lines
-Chunking Strategy: ${this.options.strategy}
-Chunks Created: ${this.chunks.length}
-
-USAGE INSTRUCTIONS:
-1. Copy each chunk file content into your coding assistant one by one
-2. Start with chunk_01.txt (contains file index and instructions)
-3. Ask for help analyzing the project chunk by chunk
-4. Reference previous chunks when asking specific questions
-
-CHUNK FILES:
-${savedFiles.map((file, i) => {
-            const chunk = this.chunks[i];
-            return `${file} - ${chunk.lines} lines (${(chunk.size/1024).toFixed(1)}KB)${chunk.hasOverlap ? ' [with overlap]' : ''}`;
-        }).join('\n')}
-
-EXAMPLE QUESTIONS TO ASK:
-- "Analyze this project chunk and explain the architecture"
-- "What are the main components and their relationships?"
-- "Find potential issues or improvements in this code"
-- "Explain how [specific feature] works based on this chunk"
-- "Help me write tests for the functions in this chunk"
-
-${'='.repeat(60)}
-`;
-        
-        const indexPath = path.join(outputDir, 'README.txt');
-        fs.writeFileSync(indexPath, indexContent, 'utf8');
-        
-        console.log(`📋 Created index file: README.txt`);
-        
-        return savedFiles;
-    }
-    
-    generateSummary() {
-        const avgChunkSize = Math.round(this.stats.totalLines / this.stats.chunksCreated);
-        const totalOutputSize = this.chunks.reduce((sum, chunk) => sum + chunk.size, 0);
-        
-        console.log('\n📊 SPLITTING SUMMARY');
-        console.log('='.repeat(50));
-        console.log(`📁 Original file: ${this.stats.totalLines.toLocaleString()} lines, ${this.stats.totalFiles} files`);
-        console.log(`🧩 Chunks created: ${this.stats.chunksCreated}`);
-        console.log(`📏 Average chunk size: ${avgChunkSize} lines`);
-        console.log(`💾 Total output size: ${(totalOutputSize/1024).toFixed(1)}KB`);
-        console.log(`⚡ Processing time: ${this.stats.processingTime}ms`);
-        
-        console.log('\n🎯 NEXT STEPS:');
-        console.log('1. Open the chunks/ directory');
-        console.log('2. Start with chunk_01.txt (copy entire content)');
-        console.log('3. Paste into your preferred coding assistant');
-        console.log('4. Ask: "Analyze this project chunk"');
-        console.log('5. Continue with subsequent chunks as needed');
-        
-        console.log('\n💡 PRO TIPS:');
-        console.log('• Each chunk is self-contained with context');
-        console.log('• Chunks have overlap to maintain continuity');
-        console.log('• Reference chunk numbers when asking specific questions');
-        console.log('• Use the file index to navigate to specific components');
-    }
-    
-    processFile(inputFile) {
-        const startTime = Date.now();
-        
-        try {
-            const lines = this.parseConsolidatedFile(inputFile);
-            this.createChunks(lines);
-            
-            const outputDir = this.options.outputDir;
-            this.saveChunks(outputDir);
-            
-            this.stats.processingTime = Date.now() - startTime;
-            this.generateSummary();
-            
-            return {
-                success: true,
-                chunksCreated: this.stats.chunksCreated,
-                outputDir: outputDir,
-                stats: this.stats
-            };
-            
-        } catch (error) {
-            console.error(`❌ Error processing file: ${error.message}`);
-            return {
-                success: false,
-                error: error.message
-            };
-        }
-    }
-}
-
-// Usage
-if (require.main === module) {
-    const args = process.argv.slice(2);
-    
-    if (args.length === 0) {
-        console.log('🧩 Large File Splitter');
-        console.log('======================');
-        console.log('');
-        console.log('Usage: node smart-chunker.js <input-file> [options]');
-        console.log('');
-        console.log('Options:');
-        console.log('  --chunk-size <lines>     Lines per chunk (default: 5000)');
-        console.log('  --overlap <lines>        Context overlap lines (default: 200)');
-        console.log('  --strategy <type>        Chunking strategy: file|function|size (default: file)');
-        console.log('  --output-dir <dir>       Output directory (default: chunks)');
-        console.log('  --no-index              Skip file index in first chunk');
-        console.log('  --no-instructions       Skip instructions in chunks');
-        console.log('');
-        console.log('Examples:');
-        console.log('  node smart-chunker.js project-files.txt');
-        console.log('  node smart-chunker.js code.txt --chunk-size 3000 --overlap 100');
-        process.exit(0);
-    }
-    
-    const inputFile = args[0];
-    
-    if (!fs.existsSync(inputFile)) {
-        console.error(`❌ Error: File not found: ${inputFile}`);
-        process.exit(1);
-    }
-    
-    const options = {};
-    for (let i = 1; i < args.length; i += 2) {
-        const flag = args[i];
-        const value = args[i + 1];
-        
-        switch (flag) {
-            case '--chunk-size':
-                options.chunkSize = parseInt(value);
-                break;
-            case '--overlap':
-                options.contextOverlap = parseInt(value);
-                break;
-            case '--strategy':
-                options.strategy = value;
-                break;
-            case '--output-dir':
-                options.outputDir = value;
-                break;
-            case '--no-index':
-                options.includeIndex = false;
-                i--;
-                break;
-            case '--no-instructions':
-                options.addInstructions = false;
-                i--;
-                break;
-        }
-    }
-    
-    console.log(`🚀 Starting file splitting of: ${inputFile}`);
-    console.log(`⚙️  Options:`, JSON.stringify(options, null, 2));
-    
-    const splitter = new FileSplitter(options);
-    const result = splitter.processFile(inputFile);
-    
-    if (result.success) {
-        console.log(`\n🎉 Successfully created ${result.chunksCreated} chunks!`);
-        console.log(`📂 Output saved to: ${result.outputDir}/`);
-    } else {
-        console.error(`\n💥 Processing failed: ${result.error}`);
         process.exit(1);
     }
 }</div>
@@ -1443,6 +761,103 @@ if (require.main === module) {
             }
         });
         
+        // Interactive test generation
+        async function generateTests() {
+            const componentCode = document.getElementById('componentInput').value.trim();
+            const resultsDiv = document.getElementById('testResults');
+            const copyBtn = document.getElementById('copyTestsBtn');
+            
+            if (!componentCode) {
+                showNotification('Please paste your component code first!', 'error');
+                return;
+            }
+            
+            resultsDiv.style.display = 'block';
+            resultsDiv.textContent = '🔄 Generating quality checks via hosted Cursor AI...';
+            copyBtn.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/smart-test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        component_code: componentCode,
+                        action: 'generate'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultsDiv.textContent = data.tests;
+                    copyBtn.style.display = 'inline-block';
+                    showNotification('✅ Quality checks generated successfully!');
+                } else {
+                    resultsDiv.textContent = `❌ Error: ${data.error}`;
+                }
+            } catch (error) {
+                resultsDiv.textContent = `❌ Network error: ${error.message}`;
+            }
+        }
+        
+        function clearResults() {
+            document.getElementById('componentInput').value = '';
+            document.getElementById('testResults').style.display = 'none';
+            document.getElementById('copyTestsBtn').style.display = 'none';
+        }
+        
+        function copyTests() {
+            const testsContent = document.getElementById('testResults').textContent;
+            navigator.clipboard.writeText(testsContent).then(() => {
+                showNotification('✅ Quality checks copied to clipboard!');
+            }).catch(() => {
+                showNotification('❌ Copy failed. Please select and copy manually.', 'error');
+            });
+        }
+        
+        function loadExample() {
+            document.getElementById('componentInput').value = `import { useIsMutating } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { PrismLoading } from '@prism-ui/react';
+
+export type MapViewProps = {
+  mutationKey: string[];
+};
+
+const MapView = (props: MapViewProps) => {
+  const { mutationKey } = props;
+  const [showLoader, setShowLoader] = useState(false);
+  const isGoogleApiMutating = useIsMutating({ mutationKey: mutationKey });
+
+  useEffect(() => {
+    if (isGoogleApiMutating > 0) {
+      setShowLoader(true);
+    } else {
+      setShowLoader(false);
+    }
+  }, [isGoogleApiMutating]);
+
+  return (
+    <div 
+      className="mt-5 h-1/3 w-full flex-col px-5 md:h-2/4"
+      data-testid="map-view-container"
+    >
+      {showLoader ? (
+        <PrismLoading
+          type="icon"
+          data-testid="prism-loading"
+        />
+      ) : (
+        <div id="map" className="flex h-full w-full" data-testid="map"></div>
+      )}
+    </div>
+  );
+};
+
+export default MapView;`;
+            showNotification('Example MapView component loaded!');
+        }
+        
         // Copy tool functionality
         window.copyTool = function(toolId) {
             const toolContent = document.getElementById(toolId).textContent;
@@ -1480,7 +895,6 @@ if (require.main === module) {
             if (e.key === 'Enter' && e.target.value !== SECRET_PASSPHRASE) {
                 const query = e.target.value.trim();
                 if (query) {
-                    // Simple search highlighting
                     highlightSearchTerms(query);
                 }
             }
@@ -1501,7 +915,6 @@ if (require.main === module) {
                 }
             });
             
-            // Clear highlighting after 3 seconds
             setTimeout(() => {
                 cards.forEach(card => {
                     card.style.border = 'none';
