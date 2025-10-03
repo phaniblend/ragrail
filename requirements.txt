@@ -3,3 +3,6 @@ flask-cors==4.0.1
 anthropic==0.54.0
 python-dotenv==1.0.0
 gunicorn==21.2.0
+aiofiles==23.2.1
+sentence-transformers==2.2.2
+chromadb==0.4.15
