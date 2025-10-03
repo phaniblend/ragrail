@@ -49,7 +49,7 @@ def interactive_tester():
 @app.route('/live')
 def live_tester():
     """Serve the Live Interactive Tester page"""
-    return send_from_directory('static', 'live_tester.html')
+    return send_from_directory('static', 'index.html')
 
 @app.route('/stealth')
 def stealth():
