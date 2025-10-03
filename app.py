@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 @app.route('/')
 def index():
     """Serve the stealth documentation page"""
-    return send_from_directory('static', 'stealth_docs.html')
+    return send_from_directory('static', 'main_docs.html')
 
 @app.route('/original')
 def original():
